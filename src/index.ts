@@ -85,19 +85,11 @@ events.on('card:select', (item: Product) => {
     const card = new Card(cloneTemplate(cardPreviewTemplate), {
         onClick: () => {
             modal.close();
-            if (!shop.basket.includes(item.id)) {
-                shop.toggleOrdered(item.id, 'Add');
-            } else {
-                shop.toggleOrdered(item.id, 'Remove');
-            }
+            shop.toggleOrdered(item.id, shop.basket.includes(item.id) ? 'Remove' : 'Add');
         }
     });
 
-    if (!shop.basket.includes(item.id)) {
-        card.button = 'Купить';
-    } else {
-        card.button = 'Убрать';
-    }
+    card.button = shop.basket.includes(item.id) ? 'Убрать' :  'Купить';
 
     modal.render({
         content: card.render({
@@ -115,7 +107,7 @@ events.on('basket:changed', () => {
 
     basket.items = shop.basket.map((id, index) => {
 
-        let item = shop.catalog.find(item => id === item.id);
+        const item = shop.catalog.find(item => id === item.id);
         
         const card = new Card(cloneTemplate(cardBasketTemplate),{
             onClick: () => {

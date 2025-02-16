@@ -14,7 +14,6 @@ export class Product extends Model<IProduct> {
 export class ShopModel extends Model<IShop> {
     basket: string[] = [];
     catalog: Product[];
-    loading: boolean;
     order: IOrder = {
         payment: '',
         address: '',
@@ -38,10 +37,8 @@ export class ShopModel extends Model<IShop> {
     }
 
     clearBasket() {
-        console.log()
-        this.basket.forEach(id => {
-            this.toggleOrdered(id, 'Remove');
-        });
+        this.basket = []; 
+        this.events.emit('basket:changed');
     }
 
     clearOrder() {
@@ -49,6 +46,8 @@ export class ShopModel extends Model<IShop> {
         this.order.address = '';
         this.order.email = '';
         this.order.phone = '';
+        this.order.total = 0;
+        this.order.items = [];
     }
 
     getTotal() {

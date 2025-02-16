@@ -42,5 +42,4 @@ export interface IShop {
   catalog: IProduct[];
   basket: string[];
   order: IOrder | null;
-  loading: boolean;
 }
